@@ -8,6 +8,8 @@ An extended attribute filter which allows for nested structures and
 unifies attribute filters and extended attribute filter.
 The filter can be extended with custom classes which allows it to get around the
 problem that only one extended attribute filter may be used.
+The filter also supports filtering on multiple content classes at the same time,
+it will do an outer join with the attribute table in this case.
 
 Tthe following elements can be extended:
 
@@ -83,14 +85,33 @@ The long-form of this would be:
         ],
     ]
 ]
+```
 
 The attribute entry may also contain the array key `call`, which means
 that a callback is used to fetch the filter structure. The callback may
 either return a normal structure as extended attribute filters does
 or return a new attribute filter structure, if the `cond` key is not
 used it will assume the `and` condition and wrap it into a long-form
-structure.
+structure. The value for the `call` is any callback structure supported
+by PHP.
 
+
+A full example:
+```
+[
+    ['folder/is_public', true],
+    [
+        'cond' => 'or',
+        'attrs' => [
+            'folder/title' => 'bar',
+            'article/'title' => 'bar',
+        ],
+    ],
+    [
+        'call' => ['MyClass', 'makeFilter'],
+    ]
+]
+```
 
 ### Data-Types
 
