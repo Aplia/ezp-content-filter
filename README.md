@@ -39,6 +39,59 @@ The operators supported are the same as for the attribute filters in eZ publish.
 - `between`
 - `not_between`
 
+The parameters for the filter can be:
+
+```['cond' => 'and'/'or', 'attrs' => [...]```
+
+This defines a list of attribute filters with either an `and` or `or` condition between each filter.
+A shorthand is available by just supplying a list of attribute filters, it will then default to `and` as the condition.
+
+Entries in the `attrs` list is either defined as an array with `key` and `value`, like this:
+
+```
+[
+    'name' => 'foo',
+    'folder/title' => 'bar',
+]
+```
+
+or as an array with each entry being an array containg the attribute name and value, like this:
+```
+[
+    ['name', 'foo'],
+    ['folder/title' => 'bar'],
+]
+
+The latter form allows for having the attribute name as an array of names, in which case
+it will filter the value on all attributes with an `or` condition.
+
+```
+[
+    [['folder/title', 'article/title'] => 'bar'],
+]
+```
+
+The long-form of this would be:
+
+```
+[
+    [
+        'cond' => 'or',
+        'attrs' => [
+            'folder/title' => 'bar',
+            'article/'title' => 'bar',
+        ],
+    ]
+]
+
+The attribute entry may also contain the array key `call`, which means
+that a callback is used to fetch the filter structure. The callback may
+either return a normal structure as extended attribute filters does
+or return a new attribute filter structure, if the `cond` key is not
+used it will assume the `and` condition and wrap it into a long-form
+structure.
+
+
 ### Data-Types
 
 These are handlers for the content class datatypes which allows for dynamic attribute names to be used.
