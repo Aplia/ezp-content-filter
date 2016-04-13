@@ -63,6 +63,7 @@ or as an array with each entry being an array containg the attribute name and va
     ['name', 'foo'],
     ['folder/title' => 'bar'],
 ]
+```
 
 The latter form allows for having the attribute name as an array of names, in which case
 it will filter the value on all attributes with an `or` condition.
