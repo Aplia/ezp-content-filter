@@ -1,0 +1,40 @@
+[Handlers]
+# These are handlers for the content class datatypes which allows for dynamic attribute names to be used
+# The content class attribute is looked up and the first handler to support the data-type will
+# be used for creating joins and the filter.
+DataTypeHandlers[]
+# Handlers for objectrelation and objectrelation list, joins with the relation table
+DataTypeHandlers[]=ApliaContentFilter\Types\RelationType
+# Handlers for all other datatypes, assumes that the value is stored in sort_key_string or sort_key_int
+DataTypeHandlers[]=ApliaContentFilter\Types\RegularType
+
+# Modifiers are simple callbacks which can wrap SQL functions around the fields or values
+# The callback is specified as a static function call, with the class name + :: + function name.
+Modifiers[]
+# Applies the DATE() function around the filter item
+Modifiers[date]=ApliaContentFilter\NestedFilter::dateFilter
+
+# Custom attribute support, this maps a specific attribute name to a filter handler for that attribute
+Attributes[]
+
+# These are all the same attributes as the ones supported by the regular attribute filter on eZContentObjectTreeNode
+Attributes[path]=ApliaContentFilter\ObjectFilter
+Attributes[published]=ApliaContentFilter\ObjectFilter
+Attributes[modified]=ApliaContentFilter\ObjectFilter
+Attributes[modified_subnode]=ApliaContentFilter\ObjectFilter
+Attributes[node_id]=ApliaContentFilter\ObjectFilter
+Attributes[contentobject_id]=ApliaContentFilter\ObjectFilter
+Attributes[section]=ApliaContentFilter\ObjectFilter
+Attributes[state]=ApliaContentFilter\ObjectFilter
+Attributes[depth]=ApliaContentFilter\ObjectFilter
+Attributes[class_identifier]=ApliaContentFilter\ObjectFilter
+Attributes[class_name]=ApliaContentFilter\ObjectFilter
+Attributes[priority]=ApliaContentFilter\ObjectFilter
+Attributes[name]=ApliaContentFilter\ObjectFilter
+Attributes[owner]=ApliaContentFilter\ObjectFilter
+Attributes[visibility]=ApliaContentFilter\ObjectFilter
+
+# This filters on the path based on a node ID,
+# for instance to exclude nodes under a specific sub-tree use:
+# ['path_element:!=', 42]
+Attributes[path_element]=ApliaContentFilter\ObjectFilter
