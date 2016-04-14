@@ -121,9 +121,10 @@ The content class attribute is looked up and the first handler to support the da
 be used for creating joins and the filter.
 
 The following specialized data-types are supported:
-- ezobjectrelation
-- ezobjectrelationlist
-- ezselection
+
+* ezobjectrelation
+* ezobjectrelationlist
+* ezselection
 
 The others falls back to a default handler which uses `sort_key_string` or `sort_key_int`.
 
