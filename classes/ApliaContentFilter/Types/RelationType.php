@@ -11,19 +11,19 @@ class RelationType extends DataType
     public function createColumn($filterInstance, $table, $classAttribute, $language)
     {
         $classAttributeId = $classAttribute->attribute('id');
-        return [
-            'joins' => [
-                [
+        return array(
+            'joins' => array(
+                array(
                     'type' => 'left',
                     'tbl' => "ezcontentobject_link $table",
-                    'conds' => [
-                        ["$table.from_contentobject_id", "ezcontentobject.id"],
-                        ["$table.from_contentobject_version", "ezcontentobject.current_version"],
-                        ["$table.contentclassattribute_id", "$classAttributeId"],
-                    ],
-                ],
-            ],
-        ];
+                    'conds' => array(
+                        array("$table.from_contentobject_id", "ezcontentobject.id"),
+                        array("$table.from_contentobject_version", "ezcontentobject.current_version"),
+                        array("$table.contentclassattribute_id", "$classAttributeId"),
+                    ),
+                ),
+            ),
+        );
     }
 
     public function createFilter($filterInstance, $column, $value, $op, $pre, $post)

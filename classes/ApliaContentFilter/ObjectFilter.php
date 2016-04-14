@@ -8,18 +8,18 @@ class ObjectFilter
         if ($field == 'class_name') {
             $classNameFilter = \eZContentClassName::sqlFilter();
             // $filterSQL['from'] .= " INNER JOIN $classNameFilter[from] ON ($classNameFilter[where])";
-            return [
+            return array(
                 'id' => 'class_name',
                 'name' => $field,
                 'tbl' => $classNameFilter['from'],
-                'joins' => [
-                    [
+                'joins' => array(
+                    array(
                         'type' => 'inner',
                         'tbl' => $classNameFilter['from'],
                         'condSql' => $classNameFilter['where'],
-                    ],
-                ],
-            ];
+                    ),
+                ),
+            );
         }
     }
 
@@ -40,7 +40,7 @@ class ObjectFilter
         } else if ($field == 'section') {
             $dbField = 'ezcontentobject.section_id';
         } else if ($field == 'state') {
-            if (!in_array($op, ['=', '!=', 'in', 'not_in'])) {
+            if (!in_array($op, array('=', '!=', 'in', 'not_in'))) {
                 throw new \Exception("Unsupported filter operator for field '$field'");
             }
             $dbField = 'contentobject_state_id';
@@ -62,15 +62,15 @@ class ObjectFilter
             $dbField = 'ezcontentobject_tree.is_invisible';
         } else if ($field == 'path_element') {
             $dbField = 'path_string';
-            if (!in_array($op, ['=', '!=', 'in', 'not_in'])) {
+            if (!in_array($op, array('=', '!=', 'in', 'not_in'))) {
                 throw new \Exception("Unsupported filter operator for field '$field'");
             }
             if (is_array($value)) {
                 $values = $value;
             } else {
-                $values = [$value];
+                $values = array($value);
             }
-            $conds = [];
+            $conds = array();
             if ($op == '=' || $op == 'in') {
                 $pathOp = 'like';
             } else if ($op == '!=' || $op == 'not_in') {
@@ -79,11 +79,11 @@ class ObjectFilter
             foreach ($values as $nodeId) {
                 $conds[] = $nested->createFilterCond($dbField, "*/" . $nodeId . "/*", $pathOp, $pre, $post);
             }
-            return [
+            return array(
                 'operator' => 'or',
                 'conds' => $conds,
-            ];
+            );
         }
-        return [$nested->createFilterCond($dbField, $value, $op, $pre, $post)];
+        return array($nested->createFilterCond($dbField, $value, $op, $pre, $post));
     }
 }

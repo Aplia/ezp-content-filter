@@ -18,7 +18,7 @@ class SelectionType extends RegularType
         $table = $column['tbl'];
         $fieldName = 'data_text';
         $field = ($table ? "$table." : "" ) . $fieldName;
-        $values = is_array($value) ? $value : [$value];
+        $values = is_array($value) ? $value : array($value);
         switch ($op) {
             case '=':
             case 'in':

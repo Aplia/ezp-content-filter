@@ -5,7 +5,7 @@ use Exceptions\UnsupportedOperatorError;
 
 class NestedFilter
 {
-    static public $ops = [
+    static public $ops = array(
         '=',
         '!=',
         '>',
@@ -18,7 +18,7 @@ class NestedFilter
         'not_like',
         'between',
         'not_between',
-    ];
+    );
     static public $registry = null;
     static public $modifiers = null;
     static public $customFilters = null;
@@ -30,8 +30,8 @@ class NestedFilter
 
     public function __construct()
     {
-        $this->columns = [];
-        $this->columnIdentifiers = [];
+        $this->columns = array();
+        $this->columnIdentifiers = array();
         $this->cond = '';
     }
 
@@ -48,10 +48,10 @@ class NestedFilter
     public function process($params)
     {
         if (!isset($params['cond'])) {
-            $params = [
+            $params = array(
                 'cond' => 'and',
                 'attrs' => $params,
-            ];
+            );
         }
         $this->cond = $this->processParam($params);
         // var_dump($this->cond);
@@ -62,7 +62,7 @@ class NestedFilter
         // var_dump($param);
         $condOp = 'and';
         $op = '=';
-        $conds = [];
+        $conds = array();
 
         if ($param instanceof NestedFilter) {
             $this->mergeJoins($param);
@@ -92,7 +92,7 @@ class NestedFilter
                 if (is_numeric($attr)) {
                     $cond = $this->processParam($value);
                 } else {
-                    $cond = $this->processParam([$attr, $value]);
+                    $cond = $this->processParam(array($attr, $value));
                 }
                 // var_dump($cond);
                 if ($cond) {
@@ -108,18 +108,18 @@ class NestedFilter
                 if (is_array($filter) && isset($filter['tables']) && isset($filter['joins'])) {
                     $counter = $this->legacyCounter++;
                     $legacyId = 'eaf_' . $counter;
-                    $this->columns[$legacyId] = [
+                    $this->columns[$legacyId] = array(
                         'id' => $legacyId,
                         'name' => 'legacy-filter/' . $counter,
                         'legacy' => $filter,
-                    ];
+                    );
                     return '';
                 }
                 if (is_array($filter) && !isset($filter['cond'])) {
-                    $filter = [
+                    $filter = array(
                         'cond' => 'and',
                         'attrs' => $filter,
-                    ];
+                    );
                 }
                 // Continue processing the return value
                 return $this->processParam($filter);
@@ -151,14 +151,14 @@ class NestedFilter
             }
 
             if (!is_array($attrs)) {
-                $attrs = [$attrs];
+                $attrs = array($attrs);
             }
 
             foreach ($attrs as $attr) {
                 // TODO: Support relations using __
                 $attrOp = $op;
-                $pre = [];
-                $post = [];
+                $pre = array();
+                $post = array();
                 if (preg_match("|^([^:]+)((:([^:]+))+)?$|", $attr, $matches)) {
                     if (isset($matches[2])) {
                         $ops = explode(":", substr($matches[2], 1));
@@ -217,11 +217,11 @@ class NestedFilter
         if (self::$customFilters === null) {
             $ini = \eZINI::instance('filter.ini');
             $attributes = $ini->variable('Handlers', 'Attributes');
-            $filters = [];
+            $filters = array();
             foreach ($attributes as $attr => $classStr) {
-                $filters[$attr] = [
+                $filters[$attr] = array(
                     'class' => $classStr,
-                ];
+                );
             }
             self::$customFilters = $filters;
         }
@@ -276,7 +276,7 @@ class NestedFilter
         }
         $classAttribute = $col['classAttribute'];
 
-        $filter = call_user_func([$this->dataTypes[$dataType], 'createFilter'], $this, $col, $value, $op, $pre, $post);
+        $filter = call_user_func(array($this->dataTypes[$dataType], 'createFilter'), $this, $col, $value, $op, $pre, $post);
         return $filter;
     }
 
@@ -422,8 +422,8 @@ class NestedFilter
             $columnName = $class->attribute('identifier') . '/' . $classAttribute->attribute('identifier');
         }
 
-        $joins = [];
-        $conds = [];
+        $joins = array();
+        $conds = array();
         $table = 'aplia_naf_' . $classAttributeId;
         $dataType = $classAttribute->attribute('data_type_string');
         $typeColumn = $this->addDataTypeColumn($table, $classAttribute, $dataType, $language);
@@ -434,7 +434,7 @@ class NestedFilter
             $conds = array_merge($conds, $typeColumn['conds']);
         }
 
-        $this->columns[$columnIdentifier] = [
+        $this->columns[$columnIdentifier] = array(
             'id' => $columnIdentifier,
             'name' => $columnName,
             'tbl' => $table,
@@ -442,7 +442,7 @@ class NestedFilter
             'conds' => $conds,
             'classAttributeId' => $classAttributeId,
             'classAttribute' => $classAttribute,
-        ];
+        );
         return $classAttributeId;
     }
 
@@ -456,7 +456,7 @@ class NestedFilter
                 $this->dataTypes[$dataType] = new $class($dataType);
             } else {
                 foreach ($registry['handlers'] as $class) {
-                    if (call_user_func([$class, 'isSupported'], $dataType)) {
+                    if (call_user_func(array($class, 'isSupported'), $dataType)) {
                         $this->dataTypes[$dataType] = new $class($dataType);
                         break;
                     }
@@ -466,7 +466,7 @@ class NestedFilter
                 throw new \Exception("No handlers found for content data-type '$dataType', cannot add a filter column");
             }
         }
-        $columnType = call_user_func([$this->dataTypes[$dataType], 'createColumn'], $this, $table, $classAttribute, $language);
+        $columnType = call_user_func(array($this->dataTypes[$dataType], 'createColumn'), $this, $table, $classAttribute, $language);
         return $columnType;
     }
 
@@ -474,12 +474,12 @@ class NestedFilter
     {
         if (self::$registry === null) {
             $ini = \eZINI::instance('filter.ini');
-            self::$registry = [
+            self::$registry = array(
                 // Reverse the order so the last appended handler is checked first
                 'handlers' => array_reverse($ini->variable('Handlers', 'DataTypeHandlers')),
                 // Maps data-type strings to a handler directly
                 'map' => $ini->variable('Handlers', 'DataTypeMap'),
-            ];
+            );
         }
         return self::$registry;
     }
@@ -489,7 +489,7 @@ class NestedFilter
         if (self::$modifiers === null) {
             $ini = \eZINI::instance('filter.ini');
             $modifierSettings = $ini->variable('Handlers', 'Modifiers');
-            $modifiers = [];
+            $modifiers = array();
             foreach ($modifierSettings as $id => $funcStr) {
                 $modifiers[$id] = explode("::", $funcStr, 2);
             }

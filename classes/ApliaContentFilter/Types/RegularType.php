@@ -18,20 +18,20 @@ class RegularType extends DataType
             \eZContentLanguage::clearPrioritizedLanguages();
         }
         $classAttributeId = $classAttribute->attribute('id');
-        return [
-            'joins' => [
-                [
+        return array(
+            'joins' => array(
+                array(
                     'type' => 'left',
                     'tbl' => "ezcontentobject_attribute $table",
-                    'conds' => [
-                        ["$table.contentobject_id", "ezcontentobject.id"],
-                        ["$table.contentclassattribute_id", "$classAttributeId"],
-                        ["$table.version", "ezcontentobject_name.content_version"],
-                    ],
-                ],
-            ],
-            'conds' => [$langCond],
-        ];
+                    'conds' => array(
+                        array("$table.contentobject_id", "ezcontentobject.id"),
+                        array("$table.contentclassattribute_id", "$classAttributeId"),
+                        array("$table.version", "ezcontentobject_name.content_version"),
+                    ),
+                ),
+            ),
+            'conds' => array($langCond),
+        );
     }
 
     public function createFilter($filterInstance, $column, $value, $op, $pre, $post)

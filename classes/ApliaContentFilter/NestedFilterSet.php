@@ -3,12 +3,12 @@ namespace ApliaContentFilter;
 
 class NestedFilterSet
 {
-    static public $joinTypes = [
+    static public $joinTypes = array(
         'inner' => 'INNER JOIN',
         'cross' => 'CROSS JOIN',
         'left' => 'LEFT OUTER JOIN',
         'right' => 'RIGHT OUTER JOIN',
-    ];
+    );
 
     static public function makeExtendedFilter($params)
     {
@@ -31,7 +31,7 @@ class NestedFilterSet
             $filter = $params;
         } else {
             if ($params === null) {
-                $params = [];
+                $params = array();
             }
             if (!is_array($params)) {
                 throw new \Exception("Parameters must be an array");
@@ -41,8 +41,8 @@ class NestedFilterSet
             $filter->process($params);
         }
 
-        $joins = [];
-        $conds = [];
+        $joins = array();
+        $conds = array();
 
         foreach ($filter->columns as $column) {
             if (!isset($column['joins']) && !isset($column['legacy']['tables'])) {
@@ -82,7 +82,7 @@ class NestedFilterSet
                 $condSql .= $column['legacy']['joins'];
             }
         }
-        return ['tables' => $tableSql, 'joins' => $condSql];
+        return array('tables' => $tableSql, 'joins' => $condSql);
     }
 
     public static function buildSqlCondition($conds, $op)
