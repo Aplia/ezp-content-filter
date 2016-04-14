@@ -119,8 +119,13 @@ A full example:
 These are handlers for the content class datatypes which allows for dynamic attribute names to be used.
 The content class attribute is looked up and the first handler to support the data-type will
 be used for creating joins and the filter.
-The default implementation supports relation types (ezcontentrelation and ezcontentrelationlist)
-as well as fallbacks for any data-type by using sort_key_string or sort_key_int.
+
+The following specialized data-types are supported:
+- ezobjectrelation
+- ezobjectrelationlist
+- ezselection
+
+The others falls back to a default handler which uses `sort_key_string` or `sort_key_int`.
 
 Data-Type handlers are specified using the classname with namespace prefixed.
 

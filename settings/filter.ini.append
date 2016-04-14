@@ -4,6 +4,8 @@
 # be used for creating joins and the filter.
 DataTypeHandlers[]
 # Handlers for objectrelation and objectrelation list, joins with the relation table
+DataTypeHandlers[]=ApliaContentFilter\Types\SelectionType
+# Handlers for objectrelation and objectrelation list, joins with the relation table
 DataTypeHandlers[]=ApliaContentFilter\Types\RelationType
 # Handlers for all other datatypes, assumes that the value is stored in sort_key_string or sort_key_int
 DataTypeHandlers[]=ApliaContentFilter\Types\RegularType
