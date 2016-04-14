@@ -1,6 +1,8 @@
 <?php
 namespace ApliaContentFilter;
 
+use Exceptions\UnsupportedOperatorError;
+
 class NestedFilter
 {
     static public $ops = [
@@ -143,7 +145,7 @@ class NestedFilter
                     }
                 }
                 if (!in_array($op, self::$ops)) {
-                    throw new \Exception("Unsupported filter operation '$op'");
+                    throw new UnsupportedOperatorError("Unsupported filter operation '$op'");
                 }
                 $op = $op;
             }
