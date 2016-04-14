@@ -280,13 +280,15 @@ class NestedFilter
         return $filter;
     }
 
-    public function createFilterCond($field, $value, $op, $pre, $post)
+    public function createFilterCond($field, $value, $op, $pre, $post, $dbOp=null)
     {
         if (!$op) {
             $op = '=';
         }
 
-        $dbOp = $op;
+        if ($dbOp === null) {
+           $dbOp = $op;
+        }
         $dbValue = $value;
 
         // Controls quotes around filter value, some filters do this manually
