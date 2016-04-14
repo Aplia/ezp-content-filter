@@ -2,13 +2,20 @@
 # These are handlers for the content class datatypes which allows for dynamic attribute names to be used
 # The content class attribute is looked up and the first handler to support the data-type will
 # be used for creating joins and the filter.
+# The handlers are search in reverse-order, this makes it easy to just append to this array
+# and have the last entry have precedence.
 DataTypeHandlers[]
-# Handlers for objectrelation and objectrelation list, joins with the relation table
-DataTypeHandlers[]=ApliaContentFilter\Types\SelectionType
-# Handlers for objectrelation and objectrelation list, joins with the relation table
-DataTypeHandlers[]=ApliaContentFilter\Types\RelationType
 # Handlers for all other datatypes, assumes that the value is stored in sort_key_string or sort_key_int
 DataTypeHandlers[]=ApliaContentFilter\Types\RegularType
+
+# Mapping from data-type string to a handler, faster lookup for handler that support
+# specific types
+DataTypeMap[]
+# Handlers for ezselection, filters on data_text concatted list
+DataTypeMap[ezselection]=ApliaContentFilter\Types\SelectionType
+# Handlers for objectrelation and objectrelation list, joins with the relation table
+DataTypeMap[ezobjectrelation]=ApliaContentFilter\Types\RelationType
+DataTypeMap[ezobjectrelationlist]=ApliaContentFilter\Types\RelationType
 
 # Modifiers are simple callbacks which can wrap SQL functions around the fields or values
 # The callback is specified as a static function call, with the class name + :: + function name.

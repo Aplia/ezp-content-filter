@@ -450,10 +450,16 @@ class NestedFilter
     {
         if (!isset($this->dataTypes[$dataType])) {
             $registry = self::getDataTypeRegistry();
-            foreach ($registry as $class) {
-                if (call_user_func([$class, 'isSupported'], $dataType)) {
-                    $this->dataTypes[$dataType] = new $class($dataType);
-                    break;
+            $handler = null;
+            if (isset($registry['map'][$dataType])) {
+                $class = $registry['map'][$dataType];
+                $this->dataTypes[$dataType] = new $class($dataType);
+            } else {
+                foreach ($registry['handlers'] as $class) {
+                    if (call_user_func([$class, 'isSupported'], $dataType)) {
+                        $this->dataTypes[$dataType] = new $class($dataType);
+                        break;
+                    }
                 }
             }
             if (!isset($this->dataTypes[$dataType])) {
@@ -468,7 +474,12 @@ class NestedFilter
     {
         if (self::$registry === null) {
             $ini = \eZINI::instance('filter.ini');
-            self::$registry = $ini->variable('Handlers', 'DataTypeHandlers');
+            self::$registry = [
+                // Reverse the order so the last appended handler is checked first
+                'handlers' => array_reverse($ini->variable('Handlers', 'DataTypeHandlers')),
+                // Maps data-type strings to a handler directly
+                'map' => $ini->variable('Handlers', 'DataTypeMap'),
+            ];
         }
         return self::$registry;
     }
