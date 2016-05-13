@@ -26,7 +26,7 @@ class ObjectFilter
     public function createFilter($nested, $field, $colId, $value, $op, $pre, $post)
     {
         if ($field == 'path') {
-            $dbField = 'path_string';
+            $dbField = 'ezcontentobject_tree.path_string';
         } else if ($field == 'published') {
             $dbField = 'ezcontentobject.published';
         } else if ($field == 'modified') {
@@ -61,7 +61,7 @@ class ObjectFilter
             $value = ( $value == '1' ) ? 0 : 1;
             $dbField = 'ezcontentobject_tree.is_invisible';
         } else if ($field == 'path_element') {
-            $dbField = 'path_string';
+            $dbField = 'ezcontentobject_tree.path_string';
             if (!in_array($op, array('=', '!=', 'in', 'not_in'))) {
                 throw new \Exception("Unsupported filter operator for field '$field'");
             }
