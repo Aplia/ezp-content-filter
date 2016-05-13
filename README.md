@@ -126,6 +126,10 @@ The following specialized data-types are supported:
 * ezobjectrelationlist
 * ezselection
 
+In addition it supports datatypes from the following extensions:
+
+* eztags - Filters on the eztags keyword ids
+
 The others falls back to a default handler which uses `sort_key_string` or `sort_key_int`.
 
 Data-Type handlers are specified using the classname with namespace prefixed.

@@ -16,6 +16,8 @@ DataTypeMap[ezselection]=ApliaContentFilter\Types\SelectionType
 # Handlers for objectrelation and objectrelation list, joins with the relation table
 DataTypeMap[ezobjectrelation]=ApliaContentFilter\Types\RelationType
 DataTypeMap[ezobjectrelationlist]=ApliaContentFilter\Types\RelationType
+# Handlers for eztags (extension)
+DataTypeMap[eztags]=ApliaContentFilter\Types\TagsType
 
 # Modifiers are simple callbacks which can wrap SQL functions around the fields or values
 # The callback is specified as a static function call, with the class name + :: + function name.
