@@ -1,0 +1,27 @@
+{
+    "name": "aplia/filter",
+    "description": "Flexible and extendible attribute filters for eZ publish",
+    "keywords": ["ezextension", "filter"],
+    "homepage": "https://bitbucket.org/aplia/library-apliafilter",
+    "type": "ezpublish-legacy-extension",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Aplia dev-team",
+            "email": "info@aplia.no",
+            "homepage": "https://www.aplia.no"
+        }
+    ],
+    "extra": {
+        "ezpublish-legacy-extension-name": "apliafilter"
+    },
+    "autoload": {
+         "psr-4": {
+            "ApliaContentFilter\\": "classes/ApliaContentFilter"
+        }
+    },
+    "require": {
+        "php": ">=5.3",
+        "composer/composer": ">=1.0"
+    }
+}

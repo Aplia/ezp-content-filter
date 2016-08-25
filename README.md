@@ -11,13 +11,21 @@ problem that only one extended attribute filter may be used.
 The filter also supports filtering on multiple content classes at the same time,
 it will do an outer join with the attribute table in this case.
 
-Tthe following elements can be extended:
+The following elements can be extended:
 
 1. Data-Types
 2. Modifiers
 3. Attributes
 
 See filter.ini.append for configuration.
+
+## Installation
+
+Install this extension using composer:
+
+```
+composer require aplia/filter
+```
 
 ### Syntax
 
