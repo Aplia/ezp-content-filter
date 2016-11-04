@@ -1,5 +1,5 @@
 <?php
-namespace ApliaContentFilter\Types;
+namespace Aplia\Content\Filter\Types;
 
 class RelationType extends DataType
 {
@@ -11,11 +11,13 @@ class RelationType extends DataType
     public function createColumn($filterInstance, $table, $classAttribute, $language)
     {
         $classAttributeId = $classAttribute->attribute('id');
+        $class = \eZContentClass::fetch($classAttribute->attribute('contentclass_id'));
         return array(
             'joins' => array(
                 array(
                     'type' => 'left',
                     'tbl' => "ezcontentobject_link $table",
+                    'comment' => "Content-Class " . $class->attribute('identifier') . "/" . $classAttribute->attribute('identifier'),
                     'conds' => array(
                         array("$table.from_contentobject_id", "ezcontentobject.id"),
                         array("$table.from_contentobject_version", "ezcontentobject.current_version"),

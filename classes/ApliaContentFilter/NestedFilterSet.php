@@ -1,5 +1,5 @@
 <?php
-namespace ApliaContentFilter;
+namespace Aplia\Content\Filter;
 
 class NestedFilterSet
 {

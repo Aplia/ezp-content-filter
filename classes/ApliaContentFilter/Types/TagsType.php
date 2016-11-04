@@ -1,5 +1,5 @@
 <?php
-namespace ApliaContentFilter\Types;
+namespace Aplia\Content\Filter\Types;
 
 class TagsType extends DataType
 {

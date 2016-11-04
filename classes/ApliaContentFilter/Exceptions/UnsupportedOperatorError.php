@@ -1,5 +1,5 @@
 <?php
-namespace ApliaContentFilter\Exceptions;
+namespace Aplia\Content\Filter\Exceptions;
 
 class UnsupportedOperatorError extends \Exception
 {

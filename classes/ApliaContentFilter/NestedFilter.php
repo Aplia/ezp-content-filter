@@ -1,7 +1,7 @@
 <?php
-namespace ApliaContentFilter;
+namespace Aplia\Content\Filter;
 
-use ApliaContentFilter\Exceptions\UnsupportedOperatorError;
+use Aplia\Content\Filter\Exceptions\UnsupportedOperatorError;
 
 class NestedFilter
 {

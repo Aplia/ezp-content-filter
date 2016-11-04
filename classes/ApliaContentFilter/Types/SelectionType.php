@@ -1,5 +1,5 @@
 <?php
-namespace ApliaContentFilter\Types;
+namespace Aplia\Content\Filter\Types;
 
 use Exceptions\UnsupportedOperatorError;
 
@@ -11,7 +11,7 @@ class SelectionType extends RegularType
     }
 
     /**
-     * @param $filterInstance ApliaContentFilter\NestedFilter
+     * @param $filterInstance Aplia\Content\Filter\NestedFilter
      */
     public function createFilter($filterInstance, $column, $value, $op, $pre, $post)
     {
