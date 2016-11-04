@@ -32,7 +32,8 @@ class RegularType extends DataType
                     ),
                 ),
             ),
-            'conds' => array($langCond),
+            // This will be available in $column['extra']
+            'langCond' => $langCond,
         );
     }
 
@@ -46,6 +47,11 @@ class RegularType extends DataType
             $fieldName = 'sort_key_int';
         }
         $field = ($table ? "$table." : "" ) . $fieldName;
-        return $filterInstance->createFilterCond($field, $value, $op, $pre, $post);
+        $langCond = $column['extra']['langCond'];
+        $sql = $filterInstance->createFilterCond($field, $value, $op, $pre, $post);
+        if ($langCond && $sql) {
+            $sql = "\n($langCond AND $sql)\n";
+        }
+        return $sql;
     }
 }

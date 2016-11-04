@@ -36,6 +36,13 @@ class SelectionType extends RegularType
             $dbValue = $db->escapeString(preg_quote($value));
             $conds[] = $filterInstance->createFilterCond($field, "(^$dbValue$|^$dbValue-.|.-$dbValue$|.-$dbValue-.)", '', $pre, $post, $dbOp);
         }
-        return "\n(" . implode(") OR (", $conds) . ")\n";
+        // langCond is set in RegularType
+        $langCond = $column['extra']['langCond'];
+        if ($langCond && $conds) {
+            $sql = "\n($langCond AND \n(" . implode(") OR (", $conds) . ") )\n";
+        } else {
+            $sql = "\n(" . implode(") OR (", $conds) . ")\n";
+        }
+        return $sql;
     }
 }
