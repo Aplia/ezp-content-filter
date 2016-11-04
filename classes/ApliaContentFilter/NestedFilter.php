@@ -433,6 +433,7 @@ class NestedFilter
         if (isset($typeColumn['conds'])) {
             $conds = array_merge($conds, $typeColumn['conds']);
         }
+        $extra = array_diff($typeColumn, array('joins', 'conds'));
 
         $this->columns[$columnIdentifier] = array(
             'id' => $columnIdentifier,
@@ -440,6 +441,7 @@ class NestedFilter
             'tbl' => $table,
             'joins' => $joins,
             'conds' => $conds,
+            'extra' => $extra,
             'classAttributeId' => $classAttributeId,
             'classAttribute' => $classAttribute,
         );
