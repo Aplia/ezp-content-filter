@@ -18,11 +18,13 @@ class RegularType extends DataType
             \eZContentLanguage::clearPrioritizedLanguages();
         }
         $classAttributeId = $classAttribute->attribute('id');
+        $class = \eZContentClass::fetch($classAttribute->attribute('contentclass_id'));
         return array(
             'joins' => array(
                 array(
                     'type' => 'left',
                     'tbl' => "ezcontentobject_attribute $table",
+                    'comment' => "Content-Class " . $class->attribute('identifier') . "/" . $classAttribute->attribute('identifier'),
                     'conds' => array(
                         array("$table.contentobject_id", "ezcontentobject.id"),
                         array("$table.contentclassattribute_id", "$classAttributeId"),

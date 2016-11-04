@@ -52,6 +52,11 @@ class NestedFilterSet
                 foreach ($column['joins'] as $join) {
                     $joinSql = "\n" . self::$joinTypes[$join['type']];
                     $joinSql .= " " . $join['tbl'] . " ON ";
+                    if (isset($join['comment']) && $join['comment']) {
+                        $comment = str_replace("*/", "* /", $join['comment']);
+                        $joinSql .= "/* " . $comment . " */";
+                    }
+                    $joinSql .= "\n    ";
                     if (isset($join['conds'])) {
                         $joinSql .= " ( " .implode(" AND ", array_map(function ($joinCond) {
                             return $joinCond[0] . '=' . $joinCond[1];
