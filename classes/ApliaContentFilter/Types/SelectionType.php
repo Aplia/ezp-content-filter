@@ -34,7 +34,16 @@ class SelectionType extends RegularType
         $db = \eZDB::instance();
         foreach ($values as $value) {
             $dbValue = $db->escapeString(preg_quote($value));
-            $conds[] = $filterInstance->createFilterCond($field, "(^$dbValue$|^$dbValue-.|.-$dbValue$|.-$dbValue-.)", '', $pre, $post, $dbOp);
+            if ($value === 'unset' || $value instanceof UnsetValue) {
+                $conds[] = $filterInstance->createFilterCond($field, "(^$)", '', $pre, $post, $dbOp);
+            } elseif ($value == 0) {
+                // For the first selection item we also match entries which have an empty string
+                // These are usually objects where the selection field was added later on and
+                // the default choice has not been chosen.
+                $conds[] = $filterInstance->createFilterCond($field, "(^$|^$dbValue$|^$dbValue-.|.-$dbValue$|.-$dbValue-.)", '', $pre, $post, $dbOp);
+            } else {
+                $conds[] = $filterInstance->createFilterCond($field, "(^$dbValue$|^$dbValue-.|.-$dbValue$|.-$dbValue-.)", '', $pre, $post, $dbOp);
+            }
         }
         // langCond is set in RegularType
         $langCond = $column['extra']['langCond'];
