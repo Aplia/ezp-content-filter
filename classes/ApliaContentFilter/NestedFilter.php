@@ -397,8 +397,8 @@ class NestedFilter
         $columnName = false;
         $classAttribute = null;
         if (!is_numeric($identifier)) {
-            $classAttributeId = \eZContentObjectTreeNode::classAttributeIDByIdentifier($identifier);
-            if ($classAttributeId === null) {
+            $classAttributeId = \eZContentClassAttribute::classAttributeIDByIdentifier($identifier);
+            if (!$classAttributeId) {
                 throw new \Exception("Class attribute with identifier string '$identifier' not found");
             }
             $columnIdentifier = 'cattr_' . $classAttributeId;
