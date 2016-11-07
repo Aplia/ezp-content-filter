@@ -383,6 +383,7 @@ class NestedFilter
     {
         // TODO: Support languages
         $language = false;
+        $columnIdentifier = null;
 
         if (!is_numeric($identifier) && isset($this->columnIdentifiers[$identifier])) {
             return $this->columnIdentifiers[$identifier];
@@ -434,6 +435,10 @@ class NestedFilter
             $conds = array_merge($conds, $typeColumn['conds']);
         }
         $extra = array_diff_key($typeColumn, array('joins', 'conds'));
+
+        if ($columnIdentifier === null) {
+            throw new \Exception("Column identifier not set");
+        }
 
         $this->columns[$columnIdentifier] = array(
             'id' => $columnIdentifier,
