@@ -19,6 +19,7 @@ class SelectionType extends RegularType
         $fieldName = 'data_text';
         $field = ($table ? "$table." : "" ) . $fieldName;
         $values = is_array($value) ? $value : array($value);
+        $isNegated = false;
         switch ($op) {
             case '=':
             case 'in':
@@ -27,6 +28,7 @@ class SelectionType extends RegularType
             case '!=':
             case 'not_in':
                 $dbOp = 'NOT REGEXP';
+                $isNegated = true;
                 break;
             default:
                 throw new UnsupportedOperatorError("Unsupported filter operation '$op' for ezselection");
@@ -45,12 +47,13 @@ class SelectionType extends RegularType
                 $conds[] = $filterInstance->createFilterCond($field, "(^$dbValue$|^$dbValue-.|.-$dbValue$|.-$dbValue-.)", '', $pre, $post, $dbOp);
             }
         }
+        $joinOp = $op == 'not_in' ? 'AND' : 'OR';
         // langCond is set in RegularType
         $langCond = $column['extra']['langCond'];
         if ($langCond && $conds) {
-            $sql = "\n($langCond AND \n(" . implode(") OR (", $conds) . ") )\n";
+            $sql = "\n($langCond AND \n(" . implode(") $joinOp (", $conds) . ") )\n";
         } else {
-            $sql = "\n(" . implode(") OR (", $conds) . ")\n";
+            $sql = "\n(" . implode(") $joinOp (", $conds) . ")\n";
         }
         return $sql;
     }
