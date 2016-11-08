@@ -35,7 +35,7 @@ class SelectionType extends RegularType
         foreach ($values as $value) {
             $dbValue = $db->escapeString(preg_quote($value));
             if ($value === 'unset' || $value instanceof UnsetValue) {
-                $conds[] = $filterInstance->createFilterCond($field, "(^$)", '', $pre, $post, $dbOp);
+                $conds[] = $isNegated ? "$field IS NOT NULL" : "$field IS NULL";
             } elseif ($value == 0) {
                 // For the first selection item we also match entries which have an empty string
                 // These are usually objects where the selection field was added later on and
