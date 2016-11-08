@@ -2,6 +2,10 @@
 
 ## 2.1.0
 
+- Fixes to `ezselection` filter. Unset values should check for `NULL` in database.
+
+## 2.1.0
+
 - Added support for transferring extra array data in columns returned by datatypes
   to the created column array. These values are available in the column index `extra`.
 - Join arrays may have `comment` index which will be embedded inline in the SQL
