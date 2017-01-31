@@ -40,6 +40,7 @@ class RegularType extends DataType
     public function createFilter($filterInstance, $column, $value, $op, $pre, $post)
     {
         $table = $column['tbl'];
+        $id = $column['classAttributeId'];
         $sortType = \eZContentObjectTreeNode::sortKeyByClassAttributeID($id);
         if ($sortType =='string') {
             $fieldName = 'sort_key_string';
