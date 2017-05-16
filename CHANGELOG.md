@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0
+
+- Added support for modifiers in the `array` form as the fourth parameter.
+
+- Fixes to `ezselection` filter. Unset values should check for `NULL` in database.
+
 ## 2.1.0
 
 - Fixes to `ezselection` filter. Unset values should check for `NULL` in database.

@@ -145,11 +145,44 @@ Data-Type handlers are specified using the classname with namespace prefixed.
 ### Modifiers
 
 Modifiers are simple callbacks which can wrap SQL functions around the fields or values.
-The callback is specified as a static function call, with the class name + :: + function name.
 
 Modifiers are specified in the attribute string, either before or after the operator.
 `created:date` would wrap the `created` field in a `DATE()` SQL call while
 `created:=:date` would wrap the matching value.
+
+Modifiers may also be specified in the `array()` form of a filter as the fourth
+parameter. e.g.
+
+```
+['folder/name', '=', 'A', ['pre' => 'first_letter']]
+```
+
+Modifiers must be defined in `filter.ini` and point to a static method in a class,
+the method will then receive one parameter which is name of the field and the
+method must return a string with the SQL code which modifies the field.
+
+e.g. to get the first letter one might do this:
+
+First define the filter name and place the full namespace for the class +
+`::` and the method name.
+
+```
+#filter.ini
+[Handlers]
+Modifiers[first_letter]=MyClass::firstLetter
+```
+
+Then define the code
+
+```
+<?php
+class MyClass
+{
+    public static firstLetter($field)
+    {
+        return "SUBSTRING($field, 1, 1)";
+    }
+}
 
 ### Attributes
 
