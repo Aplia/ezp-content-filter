@@ -183,6 +183,7 @@ class MyClass
         return "SUBSTRING($field, 1, 1)";
     }
 }
+```
 
 ### Attributes
 
