@@ -63,6 +63,7 @@ class NestedFilter
         $condOp = 'and';
         $op = '=';
         $conds = array();
+        $lookups = array();
 
         if ($param instanceof NestedFilter) {
             $this->mergeJoins($param);
@@ -144,6 +145,9 @@ class NestedFilter
                         $op = 'in';
                     }
                 }
+                if (count($param) >= 4) {
+                    $lookups = $param[3];
+                }
                 if (!in_array($op, self::$ops)) {
                     throw new UnsupportedOperatorError("Unsupported filter operation '$op'");
                 }
@@ -157,8 +161,8 @@ class NestedFilter
             foreach ($attrs as $attr) {
                 // TODO: Support relations using __
                 $attrOp = $op;
-                $pre = array();
-                $post = array();
+                $pre = isset($lookups['pre']) ? $lookups['pre'] : array();
+                $post = isset($lookups['post']) ? $lookups['post'] : array();
                 if (preg_match("|^([^:]+)((:([^:]+))+)?$|", $attr, $matches)) {
                     if (isset($matches[2])) {
                         $ops = explode(":", substr($matches[2], 1));
