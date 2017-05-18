@@ -18,6 +18,8 @@ class NestedFilter
         'not_like',
         'between',
         'not_between',
+        'rlike',
+        'not_rlike',
     );
     static public $registry = null;
     static public $modifiers = null;
@@ -324,6 +326,15 @@ class NestedFilter
                                               '*',
                                               '\\\\' ),
                                        $dbValue );
+        } else if ($op == 'rlike' || $op == 'not_rlike') {
+
+            $ini = \eZINI::instance('site.ini');
+            $databaseImplementation = $ini->variable( 'DatabaseSettings', 'DatabaseImplementation' );
+            if ($databaseImplementation !== "ezmysqli") {
+                throw new \Exception("Unsupported Database Implementation for RLIKE '$databaseImplementation'");
+            }
+            $dbOp = $op == 'rlike' ? 'RLIKE' : 'NOT RLIKE';
+            $dbValue = $db->escapeString( $value );
         } else if ($op == 'in' || $op == 'not_in') {
             $dbOp = $op == 'in' ? 'IN' : 'NOT IN';
             // Turn off quotes for value, we do this ourselves
