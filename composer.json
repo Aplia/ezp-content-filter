@@ -1,6 +1,6 @@
 {
     "name": "aplia/filter",
-    "description": "Flexible and extendible attribute filters for eZ publish",
+    "description": "Flexible and extendible attribute filters for eZ publish legacy",
     "keywords": ["ezextension", "filter"],
     "homepage": "https://bitbucket.org/aplia/library-apliafilter",
     "type": "ezpublish-legacy-extension",
