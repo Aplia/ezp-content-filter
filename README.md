@@ -1,6 +1,70 @@
 # Aplia Content Filter
 
-Extension which contains filters for content objects in eZ publish.
+Advanced filter support for content objects in eZ publish legacy. The filter
+support nested structures with `AND` and `OR` operations and more. It effectively
+replaces other specific filter extensions such as `OWOrFilter`, as well as
+regular attribute filters.
+
+This installs as an extension called `apliafilter` and provides an
+attribute filter called `NestedFilterSet`.
+
+## Installation
+
+Install this extension using composer:
+
+```
+composer require aplia/filter
+```
+
+## Usage
+
+When listing content objects this filter can be enabled by installing it
+as an extended attribute filter, then using `params` to define a nested
+structure. The structure will then be transformed into SQL queries
+and added to the normal content object query.
+
+For instance in a template one can do:
+
+```eztemplate
+{fetch('content', 'list',
+      hash(
+        'parent_node_id', 2,
+        'depth', 20,
+        'limit', 10,
+        'sort_by', array('published', false()),
+        'class_filter_type', 'include',
+        'class_filter_array', array('article'),
+        'extended_attribute_filter', hash(
+                'id', 'NestedFilterSet',
+                'params', array(
+                    array(array('article/type'), $type),
+                )
+            )
+        )
+    )}
+```
+
+A similar example in PHP:
+```php
+\eZContentObjectTreeNode::subTreeByNodeId(
+    array(
+        'Depth' => 20,
+        'Limit' => 10,
+        'SortBy' => ['published', false],
+        'ClassFilterType' => 'include',
+        'ClassFilterArray' => ['article'],
+        'ExtendedAttributeFilter' => [
+            'id' => 'NestedFilterSet',
+            'params' => array(
+                'cond' => 'OR',
+                'attrs' => array(
+                )
+            ),
+        ],
+    ),
+    2
+);
+```
 
 ## NestedFilterSet
 
@@ -19,20 +83,21 @@ The following elements can be extended:
 
 See filter.ini.append for configuration.
 
-## Installation
-
-Install this extension using composer:
-
-```
-composer require aplia/filter
-```
-
 ### Syntax
 
 The syntax of each attribute filters are an array containing the attribute name
-and the value, e.g. ```['name', 'foo']```.
+and the value, e.g.
+
+```php
+['name', 'foo']
+```
+
 The attribute name may also contain modifiers and an operator (default is `=`).
-e.g. ```['my_class/size:>', 5]```
+e.g.
+
+```php
+['my_class/size:>', 5]
+```
 
 The operators supported are the same as for the attribute filters in eZ publish.
 
@@ -51,14 +116,16 @@ The operators supported are the same as for the attribute filters in eZ publish.
 
 The parameters for the filter can be:
 
-```['cond' => 'and'/'or', 'attrs' => [...]```
+```php
+['cond' => 'and'/'or', 'attrs' => [...]
+```
 
 This defines a list of attribute filters with either an `and` or `or` condition between each filter.
 A shorthand is available by just supplying a list of attribute filters, it will then default to `and` as the condition.
 
 Entries in the `attrs` list is either defined as an array with `key` and `value`, like this:
 
-```
+```php
 [
     'name' => 'foo',
     'folder/title' => 'bar',
@@ -66,7 +133,7 @@ Entries in the `attrs` list is either defined as an array with `key` and `value`
 ```
 
 or as an array with each entry being an array containg the attribute name and value, like this:
-```
+```php
 [
     ['name', 'foo'],
     ['folder/title' => 'bar'],
@@ -76,7 +143,7 @@ or as an array with each entry being an array containg the attribute name and va
 The latter form allows for having the attribute name as an array of names, in which case
 it will filter the value on all attributes with an `or` condition.
 
-```
+```php
 [
     [['folder/title', 'article/title'] => 'bar'],
 ]
@@ -84,7 +151,7 @@ it will filter the value on all attributes with an `or` condition.
 
 The long-form of this would be:
 
-```
+```php
 [
     [
         'cond' => 'or',
@@ -106,7 +173,7 @@ by PHP.
 
 
 A full example:
-```
+```php
 [
     ['folder/is_public', true],
     [
@@ -153,7 +220,7 @@ Modifiers are specified in the attribute string, either before or after the oper
 Modifiers may also be specified in the `array()` form of a filter as the fourth
 parameter. e.g.
 
-```
+```php
 ['folder/name', '=', 'A', ['pre' => 'first_letter']]
 ```
 
@@ -166,7 +233,7 @@ e.g. to get the first letter one might do this:
 First define the filter name and place the full namespace for the class +
 `::` and the method name.
 
-```
+```ini
 #filter.ini
 [Handlers]
 Modifiers[first_letter]=MyClass::firstLetter
@@ -174,7 +241,7 @@ Modifiers[first_letter]=MyClass::firstLetter
 
 Then define the code
 
-```
+```php
 <?php
 class MyClass
 {
@@ -190,3 +257,8 @@ class MyClass
 Custom attributes may be added by defining the attribute name and a class
 to use as the handler. The modifiers and operator are parsed before calling
 the attribute handler.
+
+
+## License
+
+This library is open-sourced software licensed under the MIT license.
