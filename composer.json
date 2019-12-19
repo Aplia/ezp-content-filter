@@ -2,14 +2,14 @@
     "name": "aplia/filter",
     "description": "Flexible and extendible attribute filters for eZ publish legacy",
     "keywords": ["ezextension", "filter"],
-    "homepage": "https://bitbucket.org/aplia/library-apliafilter",
+    "homepage": "https://github.com/Aplia/ezp-content-filter",
     "type": "ezpublish-legacy-extension",
     "license": "GPL-2.0",
     "authors": [
         {
             "name": "Aplia dev-team",
             "email": "info@aplia.no",
-            "homepage": "https://www.aplia.no"
+            "homepage": "https://github.com/Aplia"
         }
     ],
     "extra": {
