@@ -8,6 +8,10 @@ regular attribute filters.
 This installs as an extension called `apliafilter` and provides an
 attribute filter called `NestedFilterSet`.
 
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/aplia/filter.svg?style=flat-square)](https://packagist.org/packages/aplia/filter)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.3-8892BF.svg?style=flat-square)](https://php.net/)
+
 ## Installation
 
 Install this extension using composer:
